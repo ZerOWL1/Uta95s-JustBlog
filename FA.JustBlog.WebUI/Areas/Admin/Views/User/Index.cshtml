@@ -1,0 +1,97 @@
+﻿@using FA.JustBlog.Core.Models.AppIdentities
+@using FA.JustBlog.Core.Models.Enums
+@using Roles = FA.JustBlog.Core.Models.Enums.Roles
+@model List<FA.JustBlog.Services.ViewModels.Users.UserRolesViewModel>
+
+@{
+    var mod = HttpContext.Current.Session["MODERATOR"] as AppUserIdentity;
+}
+
+<div class="umanager-container px-4">
+    <div class="umanager-head">
+        <h2 class="mt-4">User Management</h2>
+        <span>User Control</span>
+        <p>Admin can modify user at this page. Upgrade roles, give badges, ban users. Please be careful before modified users.</p>
+    </div>
+    <div class="umanager-body">
+        <div class="umanager-table">
+            @*table*@
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    User DataTable
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                @if (mod == null)
+                                {
+                                    <th>Upgrade</th>
+                                }
+                                <th>Ban</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var userIdentity in Model.Where(userIdentity => userIdentity.Role.ToLower() != "admin"))
+                            {
+                                if (mod == null || mod.UserName != userIdentity.Username)
+                                {
+                                    <tr>
+                                        <td>@userIdentity.Username</td>
+                                        <td>@userIdentity.Email</td>
+                                        <td>
+                                            @userIdentity.Role
+                                        </td>
+                                        <td>
+                                            @userIdentity.Status.ToString()
+                                        </td>
+                                        @if (mod == null)
+                                        {
+                                            if (userIdentity.Role == Roles.User.ToString())
+                                            {
+                                                <td>
+                                                    @Html.ActionLink("Upgrade", "Upgrade", "User",
+                                                        new { userName = userIdentity.Username },
+                                                        new { @class = "text-success text-decoration-none text-uppercase" })
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.ActionLink("DE-Upgrade", "DeUpgrade", "User",
+                                                        new { userName = userIdentity.Username },
+                                                        new { @class = "text-warning text-decoration-none text-uppercase" })
+                                                </td>
+                                            }
+                                        }
+                                        @if (userIdentity.Status == Status.IsPublished)
+                                        {
+                                            <td>
+                                                @Html.ActionLink("Ban", "Ban", "User",
+                                                    new { userName = userIdentity.Username },
+                                                    new { @class = "text-danger text-decoration-none text-uppercase" })
+                                            </td>
+                                        }
+                                        else if (userIdentity.Status == Status.IsUnPublished)
+                                        {
+                                            <td>
+                                                @Html.ActionLink("UnBan", "UnBan", "User",
+                                                    new { userName = userIdentity.Username },
+                                                    new { @class = "text-info text-decoration-none text-uppercase" })
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

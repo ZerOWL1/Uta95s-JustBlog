@@ -1,0 +1,177 @@
+﻿@using FA.JustBlog.Core.Models.Enums
+@model FA.JustBlog.Services.ViewModels.Categories.CategoriesViewModel
+
+@{
+    var message = TempData["Message"] as string;
+
+    var errorMess = ViewData["ErrorMess"] as string;
+
+}
+
+<div class="umanager-container px-4">
+    <div class="umanager-head">
+        <h2 class="mt-4">Category Management</h2>
+        <span>Category Control</span>
+        <p>Admin can modify category at this page. Add, delete, update categories. Please be careful before modified categories.</p>
+    </div>
+    <div class="umanager-body">
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <div class="alert alert-success">@message</div>
+        }
+
+        @if (!string.IsNullOrEmpty(errorMess))
+        {
+            <div class="alert alert-danger">
+                <p>@errorMess</p>
+                <p>@Html.ValidationMessage("ErrorAddCategory")</p>
+            </div>
+        }
+        <div class="umanager-table">
+            @*table*@
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Category DataTable
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>UrlSlug</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Disable</th>
+                                <th>Delete</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in Model.CreateCategoryViewModels)
+                            {
+                                if (category.Status == Status.IsPublished)
+                                {
+                                    <tr>
+                                        <td>@category.Name</td>
+                                        <td>@category.UrlSlug</td>
+                                        <td>
+                                            @{
+                                                if (!string.IsNullOrEmpty(category.Description))
+                                                {
+                                                    <span>true</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>false</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (category.Status == Status.IsPublished)
+                                                {
+                                                    <span>0</span>
+                                                }
+                                                else if (category.Status == Status.IsUnPublished)
+                                                {
+                                                    <span>1</span>
+
+                                                }
+                                                else
+                                                {
+                                                    <span>2</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(
+                                                "Disable",
+                                                "Disable",
+                                                "Category",
+                                                new { urlRequest = category.UrlSlug },
+                                                new { @class = "delete-btn btn btn-outline-warning" })
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(
+                                                "Delete",
+                                                "Delete",
+                                                "Category",
+                                                new { urlRequest = category.UrlSlug },
+                                                new { @class = "delete-btn btn btn-outline-danger" })
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink(
+                                                "Edit",
+                                                "Edit",
+                                                "Category",
+                                                new { urlRequest = category.UrlSlug },
+                                                new { @class = "delete-btn btn btn-outline-primary" })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add-container mx-0">
+        <div class="umanager-head">
+            <span>Category Modify</span>
+        </div>
+        <div class="umanager-form">
+            <a class="nav-link collapsed add-movie-btn" href="#" data-bs-toggle="collapse" data-bs-target="#collapseActorForm">
+                <div class="sb-nav-link-icon"><i class="far fa-plus-square"></i></div>
+                <span>Add New Category</span>
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapseActorForm" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <div class="row-pricing umanager-form mx-0">
+                    <div class="col-card-6 col-c-sm-12 umanager-col">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <div class="add-movie">
+                                @*add new category*@
+                                <form action="" class="add-movie-form" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreateCategoryViewModel.Name)
+                                        @Html.TextBoxFor(x => x.CreateCategoryViewModel.Name, new
+                                   {
+                                       @class = "form-control movie-form-input",
+                                       onchange = "changeUrl('CreateCategoryViewModel_Name', 'CreateCategoryViewModel_UrlSlug')"
+                                   })
+                                        @Html.ValidationMessageFor(x => x.CreateCategoryViewModel.Name, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreateCategoryViewModel.UrlSlug)
+                                        @Html.TextBoxFor(x => x.CreateCategoryViewModel.UrlSlug, new { @class = "form-control movie-form-input", @readonly = true })
+                                        @Html.ValidationMessageFor(x => x.CreateCategoryViewModel.UrlSlug, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreateCategoryViewModel.Description)
+                                        @Html.TextAreaFor(x => x.CreateCategoryViewModel.Description, new { @class = "form-control movie-form-input", id = "editor" })
+                                        @Html.ValidationMessageFor(x => x.CreateCategoryViewModel.Description, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="submit-btn">
+                                        <input type="submit" value="ADD" />
+                                    </div>
+                                </form>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="col-card-6 col-c-sm-12 umanager-col">
+                        <div class="umanager-right">
+                            <span class="u-r-title">Important Note</span>
+                            <p class="u-r-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                            <p class="u-r-item">Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. </p>
+                            <p class="u-r-item">Tempor orci eu lobortis elementum. Eget felis eget nunc lobortis mattis aliquam faucibus. Auctor neque vitae tempus quam. Tristique sollicitudin nibh sit amet.</p>
+                            <p class="u-r-item"> Ullamcorper eget nulla facilisi etiam dignissim. Dignissim sodales ut eu sem. Mauris nunc congue nisi vitae suscipit tellus mauris a. Lectus arcu bibendum at varius vel pharetra vel.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

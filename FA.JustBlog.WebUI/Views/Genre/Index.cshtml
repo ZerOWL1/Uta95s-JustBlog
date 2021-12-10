@@ -1,0 +1,92 @@
+﻿@using FA.JustBlog.Core.Models.Enums
+@model FA.JustBlog.Services.ViewModels.Posts.PostByCategoryViewModels
+
+@{
+    Layout = "~/Views/Shared/_PostLayout.cshtml";
+}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/wwwroot/assets/images/post-imgs/about-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Categories</h1>
+                    <span class="subheading">This is what I do.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            @foreach (var category in Model.CategoryViewModels)
+            {
+                @Html.ActionLink(category.Name, "GetPostByCategory", "Genre", new { urlRequest = category.Name },
+                    new
+                    {
+                        @class = "col-xl-2 col-md-4 col-4 text-center " +
+                                 "text-decoration-none text-uppercase btn btn-outline-dark mx-1 my-1"
+                    })
+            }
+        </div>
+    </div>
+    <div class="container px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="main-search-input-wrap">
+                @using (Html.BeginForm("Search", "Post", FormMethod.Post))
+                {
+                    <div class="main-search-input fl-wrap">
+                        <div class="main-search-input-item">
+                            <input type="text" value="" name="postTitle" placeholder="Search Posts...">
+                        </div>
+                        <button type="submit" class="main-search-button">Search</button>
+                    </div>
+                }                
+            </div>
+        </div>
+    </div>
+
+    @if (Model.PostViewModels != null)
+    {
+        <div class="container px-4 px-lg-5 py-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    @foreach (var postVm in Model.PostViewModels
+                        .Where(postVm => postVm.Status == Status.IsPublished))
+                    {
+                        @:<!-- Post preview-->
+                        <div class="post-preview">
+                            <h2 class="post-title">
+                                @Html.ActionLink(
+                                    postVm.Title,
+                                    "Detail",
+                                    "Post",
+                                    new { requestUrl = postVm.UrlSlug },
+                                    htmlAttributes: null)
+                            </h2>
+                            <h3 class="post-subtitle">@postVm.ShortDescription</h3>
+                            <p class="post-meta">
+                                Posted
+                                @{
+                                    var postedOn = postVm.PostedOn.Month + "/"
+                                                   + postVm.PostedOn.Day + "/"
+                                                   + postVm.PostedOn.Year;
+                                }
+                                <span>@postedOn</span>
+                                
+                                
+                                with rate @postVm.Rate&#9733; -
+                                and @postVm.ViewCount views
+                            </p>
+                        </div>
+                        @:<!-- Divider-->
+                        <hr class="my-4" />
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</main>

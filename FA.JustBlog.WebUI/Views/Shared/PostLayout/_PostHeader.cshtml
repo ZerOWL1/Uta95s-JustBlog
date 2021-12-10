@@ -1,0 +1,77 @@
+﻿<!-- Navigation-->
+
+@{
+    var countSession = HttpContext.Current.Session.Count;
+
+    var mod = HttpContext.Current.Session["MODERATOR"];
+    var admin = HttpContext.Current.Session["ADMIN"];
+}
+
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        @Html.ActionLink("JUST95S BLOG", "Index", "Post", new { Area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <li class="nav-item">
+                    @Html.ActionLink("Home", "Index", "Post", null, new
+                    {
+                        @class = "nav-link px-lg-3 py-3 py-lg-4"
+                    })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Categories", "Index", "Genre", null, new
+                    {
+                        @class = "nav-link px-lg-3 py-3 py-lg-4"
+                    })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("About", "About", "Post", null, new
+                    {
+                        @class = "nav-link px-lg-3 py-3 py-lg-4"
+                    })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink("Contact", "Contact", "Post", null, new
+                    {
+                        @class = "nav-link px-lg-3 py-3 py-lg-4"
+                    })
+                </li>
+                @if (mod != null || admin != null)
+                {
+                    <li class="nav-item">
+
+                        @Html.ActionLink("Management", "Index", "Admin", new { Area = "Admin" },
+                            new { @class = "nav-link px-lg-3 py-3 py-lg-4" })
+                    </li>
+                }
+
+                @if (countSession > 0)
+                {
+                    <li class="nav-item">
+
+                        @Html.ActionLink("Profile", "Profiles", "Post", new { Area = "" },
+                            new { @class = "nav-link px-lg-3 py-3 py-lg-4" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Sign Out", "SignOut", "Account", null,
+                            new { @class = "nav-link px-lg-3 py-3 py-lg-4" })
+                    </li>
+                }
+
+                @if (countSession == 0)
+                {
+                    <li class="nav-item">
+                        @Html.ActionLink("Sign In", "SignIn", "Account", null,
+                            new { @class = "nav-link px-lg-3 py-3 py-lg-4" })
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+
+

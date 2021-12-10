@@ -1,0 +1,136 @@
+﻿@using FA.JustBlog.Core.Models.AppIdentities
+@{
+    Layout = null;
+
+
+    var countSession = HttpContext.Current.Session.Count;
+
+    var session = new object() as AppUserIdentity;
+    for (var i = 0; i < countSession; i++)
+    {
+        session = (AppUserIdentity)HttpContext.Current.Session[i];
+    }
+
+    var mod = HttpContext.Current.Session["MODERATOR"];
+
+    var admin = HttpContext.Current.Session["ADMIN"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>UTA95S Administration</title>
+    <link href="~/wwwroot/libs/download/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="~/wwwroot/styles/grid-custom.css" rel="stylesheet" />
+    <link href="~/wwwroot/styles/admin-custom.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="~/wwwroot/assets/icons/logo.ico" />
+
+    <style>
+        .ck-editor__editable {
+            min-height: 200px;
+        }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand ps-3" href="#">
+            Welcome
+            <span class="text-capitalize">
+                @if (session?.UserName is string valueOfUserName)
+                {
+                    <span class="text-capitalize">@valueOfUserName</span>
+                }
+            </span>
+        </a>
+        @*slider toggle*@
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        @*upcoming search*@
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group" hidden="">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+        @*dropdown*@
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-manager" aria-labelledby="navbarDropdown">
+                    <li>
+                        @Html.ActionLink("Home Page", "Index", "Post", new { Area = "" }, new { @class = "dropdown-item" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Profile", "Profiles", "Post", new { Area = "" }, new { @class = "dropdown-item" })
+                    </li>
+                    <li><a class="dropdown-item" href="https://developers.facebook.com/tools/comments/">FB Management</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                        @Html.ActionLink("Logout", "SignOut", "Account", new { Area = "" }, new { @class = "dropdown-item logout-bt" })
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        @Html.Partial("AdminLayout/AdminHeader")
+        <div id="layoutSidenav_content">
+            <main>
+                @RenderBody()
+            </main>
+            @Html.Partial("AdminLayout/AdminFooter")
+        </div>
+    </div>
+
+    <script src="~/wwwroot/libs/download/jquery/jquery.min.js"></script>
+    <script src="~/wwwroot/libs/download/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c41956cca0.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+
+    <script src="~/wwwroot/scripts/adminjs/datatables-simple-demo.js"></script>
+    <script src="~/wwwroot/scripts/adminjs/chart-area-demo.js"></script>
+    <script src="~/wwwroot/scripts/adminjs/chart-bar-demo.js"></script>
+    <script src="~/wwwroot/scripts/adminjs/common-admin.js"></script>
+    <script src="~/wwwroot/scripts/adminjs/datatables-demo.js"></script>
+    <script src="~/wwwroot/scripts/adminjs/url/url-helper.js"></script>
+
+    @if (mod == null && admin == null)
+    {
+        <script>
+            window.location.href = "@Url.Action("AccessDenied","Admin")";
+        </script>
+    }
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(editor => {
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        var btnPostDeletes = $("a.delete-p-btn");
+        for (let i = 0; i < btnPostDeletes.length; i++) {
+            const btnPostDelete = btnPostDeletes[i];
+
+            $(btnPostDelete).click(function (e) {
+                const x = confirm("Do you sure want to delete this post? " +
+                    "After DELETE, this post will sent to Others Control");
+                if (x) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+    </script>
+</html>

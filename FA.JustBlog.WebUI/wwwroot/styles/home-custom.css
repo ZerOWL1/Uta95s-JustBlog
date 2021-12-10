@@ -1,0 +1,20 @@
+﻿@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400);
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap');
+
+/* SELECT ALL ELEMENTS */
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container.body-content {
+    height: 100vh;
+    margin-top: 70px;
+}

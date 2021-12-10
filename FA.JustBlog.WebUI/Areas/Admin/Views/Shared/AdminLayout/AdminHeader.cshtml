@@ -1,0 +1,74 @@
+﻿@using FA.JustBlog.Core.Models.AppIdentities
+@{
+    var countSession = HttpContext.Current.Session.Count;
+
+    var session = new object() as AppUserIdentity;
+    for (var i = 0; i < countSession; i++)
+    {
+        session = (AppUserIdentity)HttpContext.Current.Session[i];
+    }
+}
+
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Main</div>
+                <a class="nav-link active" href="@Url.Action("Index", "Admin")">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Dashboard
+                </a>
+                <div class="sb-sidenav-menu-heading">Interface</div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseControl">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Control
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseControl" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        @Html.ActionLink("User", "Index", "User", null, new { @class = "nav-link nav-li" })
+                    </nav>
+                </div>
+                @*collapsed 2*@
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseManage">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Management
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseManage" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        @Html.ActionLink("Post", "Create", "Post", null, new { @class = "nav-link nav-li" })
+                        @Html.ActionLink("Category", "Create", "Category", null, new { @class = "nav-link nav-li" })
+                        @Html.ActionLink("Tag", "Create", "Tag", null, new { @class = "nav-link nav-li" })
+                    </nav>
+                </div>
+
+                <div class="sb-sidenav-menu-heading">Others</div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMovieControl">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Others Control
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseMovieControl" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        @Html.ActionLink("Pending Posts", "Pending", "Post", null,
+                            new { @class = "nav-link nav-li" })
+                        @Html.ActionLink("Deleted Posts", "Deleted", "Post", null,
+                            new { @class = "nav-link nav-li" })
+                        @Html.ActionLink("Disabled & Deleted Category", "Deleted", "Category", null,
+                            new { @class = "nav-link nav-li" })
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            @if (session?.UserName is string valueOfUserName)
+            {
+                <span class="text-capitalize">@valueOfUserName</span>
+            }
+            <img alt="" src="" />
+        </div>
+    </nav>
+</div>

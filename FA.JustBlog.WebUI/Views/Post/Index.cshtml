@@ -1,0 +1,144 @@
+﻿@using FA.JustBlog.Core.Models.Enums
+@model FA.JustBlog.Services.ViewModels.Posts.LoadPostViewModels
+
+@{
+    ViewBag.Title = "JustBlog";
+    Layout = "~/Views/Shared/_PostLayout.cshtml";
+
+    var postViewModels = Model.Posts.ToList();
+    var pageIndex = TempData["PageIndex"] as int? ?? 1;
+    var pageMax = TempData["PageMax"] as int? ?? pageIndex;
+}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/wwwroot/assets/images/post-imgs/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Uta95s Blog</h1>
+                    <span class="subheading">simple tech-blog</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="container px-2 px-lg-3">
+    <div class="row">
+        <div class="post-container-left col-lg-8 col-md-12 mx-auto">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="">
+                    @*col-md-10 col-lg-8 col-xl-7*@
+                    @foreach (var postVm in postViewModels.Where(postVm => postVm.Status == Status.IsPublished))
+                    {
+                        <div class="post-preview">
+                            <h2 class="post-title">
+                                @Html.ActionLink(
+                                    postVm.Title,
+                                    "Detail",
+                                    "Post",
+                                    new { requestUrl = postVm.UrlSlug },
+                                    htmlAttributes: null)
+                            </h2>
+                            <h3 class="post-subtitle">@postVm.ShortDescription</h3>
+                            <p class="post-meta">
+                                Posted
+                                @{
+                                    var postedOn = postVm.PostedOn.Month + "/"
+                                                   + postVm.PostedOn.Day + "/"
+                                                   + postVm.PostedOn.Year;
+                                }
+                                <span>@postedOn</span>
+
+                                with rate
+                                @{
+                                    var rate = Math.Round(postVm.Rate);
+                                    <span>@rate&#9733; - </span>
+                                }
+                                and @postVm.ViewCount views
+                            </p>
+                        </div>
+                        <hr class="my-4" />
+                    }
+
+                    <div class="d-flex
+                 @if (pageIndex != 1){ @Html.Raw("justify-content-between") }else{ @Html.Raw("justify-content-end") }
+                 mb-4">
+                        @if (pageIndex != 1)
+                        {
+                            @Html.ActionLink("← Newest Posts", "Prev", "Post", new { Area = "", pageIndex = pageIndex },
+                                new { @class = "btn btn-primary text-uppercase" })
+                        }
+                        @if (pageIndex < pageMax)
+                        {
+                            @Html.ActionLink("Older Posts →", "Next", "Post", new { Area = "", pageIndex = pageIndex },
+                                new { @class = "btn btn-primary text-uppercase" })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="post-container-right col-lg-4 col-md-12 mx-auto">
+            <div class="post-thread">
+                <h5 class="partial-head">Most Viewed Posts: </h5>
+                @foreach (var mostViewedPost in Model.MostViewedPosts)
+                {
+                    if (mostViewedPost.Status == Status.IsPublished)
+                    {
+                        <div class="post-preview partial-body">
+                            <h5>
+                                @Html.ActionLink(
+                                    mostViewedPost.Title,
+                                    "Detail",
+                                    "Post",
+                                    new { requestUrl = mostViewedPost.UrlSlug },
+                                    new { @class = "post-title thread-title d-block" })
+                            </h5>
+                            <p class="post-meta thread-meta">
+                                Posted in @{
+                                    var date = mostViewedPost.PostedOn.Day + "-" +
+                                               mostViewedPost.PostedOn.Month + "-" +
+                                               mostViewedPost.PostedOn.Year;
+                                    <span>@date</span>
+                                } - @mostViewedPost.ViewCount Views
+                            </p>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="post-thread">
+                <h5 class="partial-head">Most Highest Rated Posts: </h5>
+                @foreach (var highestRatedPost in Model.HighestRatedPosts)
+                {
+                    if (highestRatedPost.Status == Status.IsPublished)
+                    {
+                        <div class="post-preview partial-body">
+                            <h5>
+                                @Html.ActionLink(
+                                    highestRatedPost.Title,
+                                    "Detail",
+                                    "Post",
+                                    new { requestUrl = highestRatedPost.UrlSlug },
+                                    new { @class = "post-title thread-title d-flex" })
+                            </h5>
+                            <p class="post-meta thread-meta">
+                                Posted in @{
+                                    var date = highestRatedPost.PostedOn.Day + "-" +
+                                               highestRatedPost.PostedOn.Month + "-" +
+                                               highestRatedPost.PostedOn.Year;
+                                    <span>@date</span>
+                                } - @{
+                                    var rate = Math.Round(highestRatedPost.Rate);
+                                    <span>@rate&#9733;</span>
+                                }
+                            </p>
+                        </div>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+</div>

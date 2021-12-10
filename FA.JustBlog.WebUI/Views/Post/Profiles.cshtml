@@ -1,0 +1,497 @@
+﻿@using FA.JustBlog.Core.Models.AppIdentities
+@using FA.JustBlog.Core.Models.Enums
+@using FA.JustBlog.Services.ViewModels.Categories
+@model FA.JustBlog.Services.ViewModels.Users.ProfileViewModels
+@{
+    Layout = "~/Views/Shared/_PostLayout.cshtml";
+
+
+    var countSession = HttpContext.Current.Session.Count;
+
+    var current = new object() as AppUserIdentity;
+    for (var i = 0; i < countSession; i++)
+    {
+        current = (AppUserIdentity)HttpContext.Current.Session[i];
+    }
+
+    var session = new object() as AppUserIdentity;
+
+
+    if (current != null)
+    {
+        session = current;
+    }
+
+    var errorMess = TempData["AddPostUserFail"] as string;
+
+    var categories = TempData["Categories"] as List<CategoryViewModel>;
+
+    var user = HttpContext.Current.Session["USER"];
+    var mod = HttpContext.Current.Session["MODERATOR"];
+}
+<div class="profile-container">
+    <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills tab-header" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="tab-header-items tab-gene active" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button">
+                <div class="header-item-content">
+                    <i class="fas fa-user-secret"></i>
+                    <span class="header-item-name">
+                        General
+                    </span>
+                </div>
+            </button>
+            <button class="tab-header-items tab-secu" data-bs-toggle="pill" data-bs-target="#v-pills-security" type="button">
+                <div class="header-item-content">
+                    <i class="fas fa-key"></i>
+                    <span class="header-item-name">
+                        Security
+                    </span>
+                </div>
+            </button>
+            <button class="tab-header-items tab-badge" data-bs-toggle="pill" data-bs-target="#v-pills-badges" type="button">
+                <div class="header-item-content">
+                    <i class="far fa-id-badge"></i>
+                    <span class="header-item-name">
+                        Badges
+                    </span>
+                </div>
+            </button>
+            @if (user != null)
+            {
+                <button class="tab-header-items tab-favor" data-bs-toggle="pill" data-bs-target="#v-pills-favor" type="button">
+                    <div class="header-item-content">
+                        <i class='bx bx-table'></i>
+                        <span class="header-item-name">
+                            List Posts
+                        </span>
+                    </div>
+                </button>
+                <button class="tab-header-items tab-add-post" data-bs-toggle="pill" data-bs-target="#v-pills-add-post" type="button">
+                    <div class="header-item-content">
+                        <i class='bx bx-add-to-queue'></i>
+                        <span class="header-item-name">
+                            Add Posts
+                        </span>
+                    </div>
+                </button>
+            }
+        </div>
+        <div class="tab-content" id="v-pills-tabContent">
+            @*tab profile*@
+            <div class="tab-pane fade show tab-content-item active" id="v-pills-profile">
+                <div class="tab-content-body">
+                    <div class="tab-title">
+                        <span>General Settings</span>
+                        <div>
+                            Manage the account details you've shared with UTA95S including your name, contact info and more
+                        </div>
+                    </div>
+                    <div class="tab-body">
+                        <div class="tab-account">
+                            <span>Account Info</span>
+                            <p>ID: <span class="user-id">@Model.ProfileViewModel.Id</span></p>
+                            <div class="row-pricing account-info" style="margin: 0;">
+                                <div class="display-name col-card-6 col-c-md-12 col-c-sm-12">
+                                    <div class="tab-acc-form">
+                                        <div class="display-title">
+                                            <span>Display Name</span>
+                                            <div class="title-value" readonly="">
+                                                @Model.ProfileViewModel.UserName
+                                            </div>
+                                        </div>
+                                        <div class="display-icon">
+                                            @*edit-name*@
+                                            <input class="" type="submit" hidden="" readonly="readonly" />
+                                            <i class="fas fa-pencil-alt fas-name"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="display-name col-card-6 col-c-md-12 col-c-sm-12">
+                                    @using (Html.BeginForm(
+                                        "ChangeMail",
+                                        "Profile",
+                                        FormMethod.Post,
+                                        new { @class = "tab-acc-form", enctype = "multipart/form-data" }))
+                                    {
+                                        <div class="display-title">
+                                            <span>Email Address</span>
+                                            @Html.TextBoxFor(x => x.ProfileViewModel.Email,
+                                                new { @class = "title-value title-email" })
+                                        </div>
+                                        <div class="display-icon">
+                                            <input class="edit-mail" type="submit" hidden="" />
+                                            <i class="fas fa-pencil-alt fas-mail"></i>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-personal">
+                            <span>Personal Details</span>
+                            <div class="person-infor">
+                                Manage your name and contact info.
+                                These personal details are private and will
+                                not be displayed to other users. View our <a href="https://www.termsfeed.com/live/e3c51e1f-dd04-4568-ba9d-617bca9d4c5d">Privacy Policy</a>
+                            </div>
+                            <div class="profile-img">
+                                @if (session?.Avatar != null)
+                                {
+                                    <img alt="profile-img" src="@Url.Content(session.Avatar)" />
+                                }
+                            </div>
+                            <div class="row-pricing account-info" style="margin: 0;">
+                                <div class="display-name col-card-6 col-c-md-12 col-c-sm-12">
+                                    <div class="display-title">
+                                        @using (Html.BeginForm("ChangeImage", "Profile",
+                                            FormMethod.Post,
+                                            new { @class = "tab-acc-form", enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="profile-img-container">
+                                                <span class="profile-title">Profile Images</span>
+                                                <div class="profile-img-content">
+                                                    <span class="title-value choose">
+                                                        @Html.TextBoxFor(x => x.ProfileViewModel.ImageFile, new
+                                                        {
+                                                            @class = "img-choose",
+                                                            type = "file",
+                                                            accept = "image/png,image/jpeg,image/jpg"
+                                                        })
+                                                    </span>
+                                                    <span class="title-submit"><input type="submit" value="UPLOAD" /></span>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="display-name col-card-6 col-c-md-12 col-c-sm-12">
+                                    <div class="display-title display-lang">
+                                        <span class="profile-title">Preferred Communication Language</span>
+                                        <span class="title-value language-value">English</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (mod != null || user != null)
+                    {
+                        <div class="tab-footer">
+                            <span>Disable account</span>
+                            <div class="del-acc">
+                                <p>
+                                    Click DISABLE ACCOUNT to start the process of permanently disabling your Uta95s - JustBlog account including all personal information, profile, post process, and favorites. 
+                                    When you disable account you have to contact admin to restore your account. Unless your account gonna get disable forever
+                                </p>
+                                @Html.ActionLink("Disable Account",
+                                    "DisableAccount",
+                                    "Profile",
+                                    new { userName = Model.ProfileViewModel.UserName },
+                                    new { @class = "acc-del", title = "del-acc" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            @*tab security*@
+            <div class="tab-pane fade tab-content-item tab-content-secu" id="v-pills-security">
+                <div class="secu-title">
+                    <span>Change your password</span>
+                    <p>For your security, we highly recommend that you choose a unique password that you don't use for any other online account.</p>
+                </div>
+                <div class="secu-body row-pricing" style="margin: 0" id="form-p-pass">
+                    <div class="col-card-6 col-c-md-12 col-c-sm-12">
+                        @using (Html.BeginForm("ChangePass", "Profile",
+                                FormMethod.Post,
+                                new { @class = "secu-left", enctype = "multipart/form-data" }))
+                        {
+                            <div class="left-secu-title">
+                                <span class="secu-t1">Current Password</span>
+                                <span class="secu-t2">Required</span>
+                                @Html.PasswordFor(x => x.PasswordViewModel.OldPassword,
+                                    new { @class = "cu-pass", placeholder = "CURRENT PASSWORD *" })
+                                @Html.ValidationMessageFor(x => x.PasswordViewModel.OldPassword)
+                            </div>
+                            <div class="left-secu-title">
+                                <span class="secu-t1">New Password</span>
+                                <span class="secu-t2">Required</span>
+                                @Html.PasswordFor(x => x.PasswordViewModel.NewPassword,
+                                    new { @class = "secu-in", placeholder = "NEW PASSWORD *" })
+                                @Html.ValidationMessageFor(x => x.PasswordViewModel.NewPassword)
+                            </div>
+                            <div class="left-secu-title">
+                                <span class="secu-t1">Retype New Password</span>
+                                <span class="secu-t2">Required</span>
+                                @Html.PasswordFor(x => x.PasswordViewModel.RePassword,
+                                    new { @class = "secu-in", placeholder = "RETYPE PASSWORD *" })
+                                @Html.ValidationMessageFor(x => x.PasswordViewModel.RePassword)
+                            </div>
+                            <div class="last-secu-btn">
+                                <div class="secu-discard">Discard Changes</div>
+                                <input class="secu-in" type="submit" value="Save changes" />
+                            </div>
+                        }
+                    </div>
+                    <div class="col-card-6 col-c-md-12 col-c-sm-12 right-secu" style="padding: 20px; ">
+                        <div class="secu-right">
+                            <div class="secu-right-title">
+                                <span class="secu-r-title">Your Passwords</span>
+                                <p>Your re-password must be the same as your new passwords used</p>
+                                <p>Your password must have at least 1+ special characters and 1+ capital characters</p>
+                                <p>Your password must have at least 6+ characters</p>
+                                <p>Your password must contain no space(s)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*tab-badges*@
+            <div class="tab-pane fade tab-content-item tab-content-all tab-content-badges" id="v-pills-badges">
+                <div class="badges-container">
+                    <div class="badges-header">
+                        <div class="badges-head">Badges</div>
+                        <div class="badges-desc">
+                            Manage the account badges you've earn with UTA95S while comment, level up and sharing.
+                        </div>
+                    </div>
+                    <div class="badges-body">
+                        <div class="row-pricing badges-content" style="margin: 0; justify-content: center;">
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/santalune.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Santalune Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/cyllage.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Cyllage Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/shalour.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Shalour Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/coumarine.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Coumarine Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/lumiose.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Lumiose Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/laverre.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Laverre Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/anistar.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Anistar Badge</div>
+                            </div>
+                            <div class="badges-item col-card-3 col-c-sm-3">
+                                <div class="badges-title">
+                                    <img src="~/wwwroot/assets/sources/badges/snowbelle.webp" alt="badge" />
+                                </div>
+                                <div class="badges-img">Snowbelle Badge</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (user != null)
+            {
+                @*tab-list-post*@
+                <div class="tab-pane fade tab-content-item tab-content-all tab-content-favor" id="v-pills-favor">
+                    <div class="tab-favor-container">
+                        <div class="tab-favor-header">
+                            @if (session?.UserName is string valueOfUserName)
+                            {
+                                <div class="tab-favor-title">List @valueOfUserName posts</div>
+                            }
+                            <div class="tab-favor-desc">
+                                View the list own posts that you created before.
+                                Please wait admin approves your posts. Your infors will be privated by of
+                                <a href="https://www.termsfeed.com/live/e3c51e1f-dd04-4568-ba9d-617bca9d4c5d" title="">Terms of Service</a>
+                            </div>
+                        </div>
+                        <div class="umanager-table">
+                            @*table*@
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <table id="datatablesSimple">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model != null)
+                                            {
+                                                foreach (var post in Model.CreatePostViewModels)
+                                                {
+                                                    <tr>
+                                                        <td>@post.Title</td>
+                                                        <td>
+                                                            @if (post.Status != Status.IsPublished)
+                                                            {
+                                                                if (post.Status == Status.IsUnPublished)
+                                                                {
+                                                                    <span>@Status.IsUnPublished.ToString()</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>@Status.IsDeleted.ToString()</span>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>Approved</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*tab-add-posts*@
+                <div class="tab-pane fade tab-content-item tab-content-all tab-content-favor" id="v-pills-add-post">
+                    <div class="tab-favor-container">
+                        <div class="tab-favor-header">
+
+                            @if (!string.IsNullOrEmpty(errorMess))
+                            {
+                                <div class="alert alert-danger tab-favor-title">
+                                    <p>@errorMess</p>
+                                    <p>@Html.ValidationMessage("ErrorAddPost")</p>
+                                </div>
+                            }
+                            <div class="tab-favor-title">Add Own Post</div>
+                            <div class="tab-favor-desc">
+                                Add your own post and wait mod or admin approves it.
+                                Please careful while adding your post. If you get it in other website, using credit please.
+                                Your infors will be privated by of
+                                <a href="https://www.termsfeed.com/live/e3c51e1f-dd04-4568-ba9d-617bca9d4c5d" title="">Terms of Service</a>
+                            </div>
+                        </div>
+                        <div class="tab-farvor-body" id="addPost">
+                            <div class="tab-favor-body-content" style="margin: 0;">
+                                <a class="nav-link collapsed add-movie-btn tab-add-post" href="#" data-bs-toggle="collapse" data-bs-target="#collapseActorForm">
+                                    <div class="sb-nav-link-icon"><i class="far fa-plus-square"></i></div>
+                                    <span>Add New Post</span>
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse add-post-container" id="collapseActorForm" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <div class="add-post-left">
+                                        @using (Html.BeginForm("AddUserPost", "Profile", FormMethod.Post, new
+                                        {
+                                            @class = "add-post-form"
+                                        }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.Title)
+                                                @Html.TextBoxFor(x => x.CreatePostViewModel.Title, new
+                                                {
+                                                    @class = "form-control movie-form-input",
+                                                    onchange = "changeUrl('CreatePostViewModel_Title', 'CreatePostViewModel_UrlSlug')"
+                                                })
+                                                @Html.ValidationMessageFor(x => x.CreatePostViewModel.Title, null, new { @class = "text-danger" })
+                                            </div>
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.UrlSlug)
+                                                @Html.TextBoxFor(x => x.CreatePostViewModel.UrlSlug, new { @class = "form-control movie-form-input", @readonly = true })
+                                                @Html.ValidationMessageFor(x => x.CreatePostViewModel.UrlSlug, null, new { @class = "text-danger" })
+                                            </div>
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.Tags)
+                                                @Html.TextBoxFor(x => x.CreatePostViewModel.Tags, new { @class = "form-control movie-form-input" })
+                                                @Html.ValidationMessageFor(x => x.CreatePostViewModel.Tags, null, new { @class = "text-danger" })
+                                            </div>
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.PostContent)
+                                                @Html.TextAreaFor(x => x.CreatePostViewModel.PostContent, new { @class = "form-control movie-form-input" })
+                                                @Html.ValidationMessageFor(x => x.CreatePostViewModel.PostContent, null, new { @class = "text-danger" })
+                                            </div>
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.ShortDescription)
+                                                @Html.TextAreaFor(x => x.CreatePostViewModel.ShortDescription, new { @class = "form-control movie-form-input" })
+                                                @Html.ValidationMessageFor(x => x.CreatePostViewModel.ShortDescription, null, new { @class = "text-danger" })
+                                            </div>
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.CategoryId)
+
+                                                <select name="CreatePostViewModel.CategoryId" class="form-control movie-form-input">
+                                                    <option disabled="">Choose category</option>
+                                                    @if (categories != null)
+                                                    {
+                                                        foreach (var category in categories.Where(category => category.Status == Status.IsPublished))
+                                                        {
+                                                            <option value="@category.Id">@category.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="mv-bx">
+                                                @Html.LabelFor(x => x.CreatePostViewModel.Description)
+                                                @Html.TextAreaFor(x => x.CreatePostViewModel.Description, new { @class = "form-control movie-form-input", id = "add-post-editor" })
+                                                @Html.ValidationMessageFor(x => x.CreatePostViewModel.Description, null, new { @class = "text-danger" })
+                                            </div>
+                                            <div class="submit-btn">
+                                                <input class="add-post-btn" type="submit" value="ADD" />
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="add-post-right">
+                                        <span class="u-r-title">Important Note</span>
+                                        <p class="u-r-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                                        <p class="u-r-item">Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. </p>
+                                        <p class="u-r-item">Tempor orci eu lobortis elementum. Eget felis eget nunc lobortis mattis aliquam faucibus. Auctor neque vitae tempus quam. Tristique sollicitudin nibh sit amet.</p>
+                                        <p class="u-r-item"> Ullamcorper eget nulla facilisi etiam dignissim. Dignissim sodales ut eu sem. Mauris nunc congue nisi vitae suscipit tellus mauris a. Lectus arcu bibendum at varius vel pharetra vel.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const navbar = document.getElementById("mainNav");
+    window.addEventListener("load", function () {
+        navbar.classList.toggle("sticky");
+    });
+
+    function myFunction(x) {
+        if (x.matches) {
+            navbar.classList.remove("navbar-light");
+            navbar.classList.add("navbar-dark");
+        } else {
+            navbar.classList.add("navbar-dark");
+            navbar.classList.remove("navbar-light");
+        }
+    }
+
+    var media = window.matchMedia("(max-width: 1000px)");
+    myFunction(media);
+    x.addListener(myFunction);
+</script>
+

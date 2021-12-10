@@ -1,0 +1,61 @@
+﻿@using FA.JustBlog.Core.Models.Enums
+@model List<FA.JustBlog.Services.ViewModels.Posts.PostViewModels>
+
+@{
+    Layout = "~/Views/Shared/_PostLayout.cshtml";
+
+    var postTags = Model.ToList();
+    var tag = ViewBag.TagName as string;
+}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/wwwroot/assets/images/post-imgs/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>@tag</h1>
+                    <span class="subheading">A Simple Blog Tutorial</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @foreach (var postVm in postTags.Where(postVm => postVm.Status == Status.IsPublished))
+            {
+                @:<!-- Post preview-->
+                <div class="post-preview">
+                    <h2 class="post-title">
+                        @Html.ActionLink(
+                            postVm.Title,
+                            "Detail",
+                            "Post",
+                            new { requestUrl = postVm.UrlSlug },
+                            htmlAttributes: null)
+                    </h2>
+                    <h3 class="post-subtitle">@postVm.ShortDescription</h3>
+                    <p class="post-meta">
+                        Posted
+                        @{
+                            var postedOn = postVm.PostedOn.Month + "/"
+                                           + postVm.PostedOn.Day + "/"
+                                           + postVm.PostedOn.Year;
+                        }
+                        <span>@postedOn</span>
+
+                        with rate @postVm.Rate&#9733; -
+                        and @postVm.ViewCount views
+                    </p>
+                </div>
+                @:<!-- Divider-->
+                <hr class="my-4" />
+            }
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+﻿@using FA.JustBlog.Core.Models.Enums
+@using FA.JustBlog.Services.ViewModels.Categories
+@model FA.JustBlog.Services.ViewModels.Posts.CreatePostViewModel
+
+@{
+    var categories = TempData["Categories"] as List<CategoryViewModel>;
+}
+
+<div class="add-container" style="margin: 30px 15px 20px;">
+    <div class="umanager-head">
+        <span>Edit Post</span>
+    </div>
+    <div class="umanager-form">
+        <div class="" id="collapseActorForm" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <div class="row-pricing umanager-form mx-0">
+                <div class="col-card-6 col-c-sm-12 umanager-col">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <div class="add-movie">
+                            <form action="" class="add-movie-form" method="post">
+                                @Html.AntiForgeryToken()
+                                @Html.TextBoxFor(x => x.Id, new
+                                    {
+                                        @class = "form-control movie-form-input",
+                                             type = "hidden",
+                                             @readonly = true
+                                    })
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.Title)
+                                    @Html.TextBoxFor(x => x.Title, new
+                               {
+                                   @class = "form-control movie-form-input",
+                                   onchange = "changeUrl('Title', 'UrlSlug')"
+                               })
+                                    @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.UrlSlug)
+                                    @Html.TextBoxFor(x => x.UrlSlug, new { @class = "form-control movie-form-input", @readonly = true })
+                                    @Html.ValidationMessageFor(x => x.UrlSlug, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.Tags)
+                                    @Html.TextBoxFor(x => x.Tags, new { @class = "form-control movie-form-input"})
+                                    @Html.ValidationMessageFor(x => x.Tags, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.ShortDescription)
+                                    @Html.TextAreaFor(x => x.ShortDescription, new { @class = "form-control movie-form-input" })
+                                    @Html.ValidationMessageFor(x => x.ShortDescription, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.PostContent)
+                                    @Html.TextAreaFor(x => x.PostContent, new { @class = "form-control movie-form-input" })
+                                    @Html.ValidationMessageFor(x => x.PostContent, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.Description)
+                                    @Html.TextAreaFor(x => x.Description, new { @class = "form-control movie-form-input", id = "editor" })
+                                    @Html.ValidationMessageFor(x => x.Description, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.CategoryId)
+
+                                    <select name="CategoryId" class="form-control movie-form-input">
+                                        <option disabled="">Choose category</option>
+                                        @if (categories != null)
+                                        {
+                                            foreach (var category in categories)
+                                            {
+                                                if (category.Status == Status.IsPublished)
+                                                {
+                                                    <option value="@category.Id" @(Model.CategoryId == category.Id ? "selected" : "")>
+                                                        @category.Name
+                                                    </option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                    @Html.ValidationMessageFor(x => x.Status, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.Status)
+
+                                    <select name="Status" class="form-control movie-form-input">
+                                        <option disabled="">Choose status</option>
+                                        @if (Model != null)
+                                        {
+                                            for (var i = 0; i < Enum.GetNames(typeof(Status)).Length; i++)
+                                            {
+                                                <option value="@i" @((int)Model.Status == i ? "selected" : "")>
+                                                    @Enum.GetNames(typeof(Status))[i]
+                                                </option>
+                                            }
+                                            var abc = Model.Status;
+                                        }
+                                    </select>
+
+                                    @Html.ValidationMessageFor(x => x.Status, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="submit-btn">
+                                    <input type="submit" value="UPDATE" />
+                                </div>
+                            </form>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-card-6 col-c-sm-12 umanager-col">
+                    <div class="umanager-right">
+                        <span class="u-r-title">Important Note</span>
+                        <p class="u-r-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <p class="u-r-item">Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. </p>
+                        <p class="u-r-item">Tempor orci eu lobortis elementum. Eget felis eget nunc lobortis mattis aliquam faucibus. Auctor neque vitae tempus quam. Tristique sollicitudin nibh sit amet.</p>
+                        <p class="u-r-item"> Ullamcorper eget nulla facilisi etiam dignissim. Dignissim sodales ut eu sem. Mauris nunc congue nisi vitae suscipit tellus mauris a. Lectus arcu bibendum at varius vel pharetra vel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

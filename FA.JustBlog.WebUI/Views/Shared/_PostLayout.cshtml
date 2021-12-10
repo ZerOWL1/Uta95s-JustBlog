@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Uta95s Blog";
+
+    var messageSuccess = TempData["ProfileSuccess"] as string;
+
+    var messageError = TempData["ProfileFail"] as string;
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META TAG-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+
+    <!-- TITLE -->
+    <title>@ViewBag.Title</title>
+
+    <!-- BOOTSTRAP CdnJS OR OTHERS CSS -->
+    @*@Styles.Render("~/wwwroot/libs/download/bootstrap/css")
+        @Scripts.Render("~/wwwroot/libs/download/bootstrap/js")*@
+
+    <link href="~/wwwroot/libs/download/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- BOX ICONS -->
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+
+    <!-- OWN CSS -->
+    <link href="~/wwwroot/styles/post-custom.css" rel="stylesheet" />
+    <link href="~/wwwroot/styles/profile-custom.css" rel="stylesheet" />
+    <link href="~/wwwroot/styles/grid-custom.css" rel="stylesheet" />
+    <!-- ICON WEB PAGE -->
+    <link rel="icon" type="image/png" href="~/wwwroot/assets/icons/logo.ico" />
+    <!-- OTHER STYLES -->
+    <style>
+        .ck-editor__editable {
+            min-height: 200px;
+        }
+
+        .rc-anchor-normal {
+            background: #000 !important;
+            color: #000 !important;
+        }
+
+        .g-recaptcha {
+            margin-bottom: 35px;
+            -webkit-transform: scale(1.2);
+            -webkit-transform-origin: 0 0;
+        }
+
+        @@media(max-width: 1150px) {
+            .g-recaptcha {
+                -webkit-transform: scale(.95);
+            }
+        }
+
+        @@media(max-width: 920px) {
+            .g-recaptcha {
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @@media(max-width: 760px) {
+            .g-recaptcha {
+                -webkit-transform: scale(1.2);
+            }
+        }
+
+        @@media(max-width: 440px) {
+            .g-recaptcha {
+                -webkit-transform: scale(.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav-container">
+        @Html.Partial("PostLayout/_PostHeader")
+    </div>
+    <div class="body-container">
+        @RenderBody()
+    </div>
+    <div class="footer-container">
+        @Html.Partial("PostLayout/_PostFooter")
+    </div>
+
+    <!-- FRAMEWORK JS -->
+    <script src="~/wwwroot/libs/download/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/wwwroot/libs/download/jquery/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/c41956cca0.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0&appId=277860507449555&autoLogAppEvents=1" nonce="5evdRipI"></script>
+    <script src="~/wwwroot/libs/download/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/wwwroot/libs/download/tinymce/tinymce.min.js"></script>
+    <script src="~/wwwroot/scripts/adminjs/url/url-helper.js"></script>
+    <!-- CHART & JS -->
+    <script src="~/wwwroot/scripts/adminjs/datatables-simple-demo.js"></script>
+    <script src="~/wwwroot/scripts/tinycmejs/common-tinycme.js"></script>
+    <!-- API SCRIPT & JSON -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- OWN SCRIPT -->
+    <script src="~/wwwroot/scripts/common-post.js"></script>
+    <script src="~/wwwroot/scripts/common-profile.js"></script>
+
+
+    <!-- OTHER SCRIPT -->
+    @if (!string.IsNullOrEmpty(messageSuccess))
+    {
+        <script>
+            alert('@messageSuccess');
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(messageError))
+    {
+        <script>
+            alert('@messageError');
+        </script>
+    }
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#add-post-editor'))
+            .then(editor => {
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
+        $(".fas-name").click(function () {
+            $(".edit-name").trigger('click');
+        });
+
+        $(".fas-mail").click(function () {
+            $(".edit-mail").trigger('click');
+        });
+    </script>
+</body>
+
+</html>

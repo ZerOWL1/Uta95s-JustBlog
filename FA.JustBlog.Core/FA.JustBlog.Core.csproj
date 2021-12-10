@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E8B01F92-851B-4C5B-8084-B466422D32E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FA.JustBlog.Core</RootNamespace>
+    <AssemblyName>FA.JustBlog.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\BlogContext.cs" />
+    <Compile Include="Context\BlogInitializer.cs" />
+    <Compile Include="Core\Infrastructures\GenericRepository.cs" />
+    <Compile Include="Core\Infrastructures\IGenericRepository.cs" />
+    <Compile Include="Core\IRepositories\ICategoryRepository.cs" />
+    <Compile Include="Core\IRepositories\ICommentRepository.cs" />
+    <Compile Include="Core\IRepositories\IPostRepository.cs" />
+    <Compile Include="Core\IRepositories\ITagRepository.cs" />
+    <Compile Include="Core\Repositories\CategoryRepository.cs" />
+    <Compile Include="Core\Repositories\CommentRepository.cs" />
+    <Compile Include="Core\Repositories\PostRepository.cs" />
+    <Compile Include="Core\Repositories\TagRepository.cs" />
+    <Compile Include="Core\UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="Core\UnitOfWork\UnitOfWork.cs" />
+    <Compile Include="Migrations\202111010909120_InitialTable.cs" />
+    <Compile Include="Migrations\202111010909120_InitialTable.designer.cs">
+      <DependentUpon>202111010909120_InitialTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111020255135_AddIdentity.cs" />
+    <Compile Include="Migrations\202111020255135_AddIdentity.designer.cs">
+      <DependentUpon>202111020255135_AddIdentity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111020308476_ChangeNameIdentityTable.cs" />
+    <Compile Include="Migrations\202111020308476_ChangeNameIdentityTable.designer.cs">
+      <DependentUpon>202111020308476_ChangeNameIdentityTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111031003012_ChangeNameIdentityTables.cs" />
+    <Compile Include="Migrations\202111031003012_ChangeNameIdentityTables.designer.cs">
+      <DependentUpon>202111031003012_ChangeNameIdentityTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111031011387_AddIdentityTables.cs" />
+    <Compile Include="Migrations\202111031011387_AddIdentityTables.designer.cs">
+      <DependentUpon>202111031011387_AddIdentityTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111040321307_AddNewColDescriptionToPostTables.cs" />
+    <Compile Include="Migrations\202111040321307_AddNewColDescriptionToPostTables.designer.cs">
+      <DependentUpon>202111040321307_AddNewColDescriptionToPostTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111041510551_ChangeRequiredUrlSlugAndDescInTagsTable.cs" />
+    <Compile Include="Migrations\202111041510551_ChangeRequiredUrlSlugAndDescInTagsTable.designer.cs">
+      <DependentUpon>202111041510551_ChangeRequiredUrlSlugAndDescInTagsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111041707234_ChangeLengthPostContentPostTables.cs" />
+    <Compile Include="Migrations\202111041707234_ChangeLengthPostContentPostTables.designer.cs">
+      <DependentUpon>202111041707234_ChangeLengthPostContentPostTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111061739251_AddPostTagMapTable.cs" />
+    <Compile Include="Migrations\202111061739251_AddPostTagMapTable.designer.cs">
+      <DependentUpon>202111061739251_AddPostTagMapTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111061749360_ChangeNamePostTagMapsToPostTagMapTable.cs" />
+    <Compile Include="Migrations\202111061749360_ChangeNamePostTagMapsToPostTagMapTable.designer.cs">
+      <DependentUpon>202111061749360_ChangeNamePostTagMapsToPostTagMapTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111061855097_IgnorePostTagMapCollections.cs" />
+    <Compile Include="Migrations\202111061855097_IgnorePostTagMapCollections.designer.cs">
+      <DependentUpon>202111061855097_IgnorePostTagMapCollections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111080435444_ModifiedAspNetRoleTables.cs" />
+    <Compile Include="Migrations\202111080435444_ModifiedAspNetRoleTables.designer.cs">
+      <DependentUpon>202111080435444_ModifiedAspNetRoleTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111100611098_ModifiedAvatarIdentityUser.cs" />
+    <Compile Include="Migrations\202111100611098_ModifiedAvatarIdentityUser.designer.cs">
+      <DependentUpon>202111100611098_ModifiedAvatarIdentityUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111100632553_AddAvatarColIntoAspNetUsersTable.cs" />
+    <Compile Include="Migrations\202111100632553_AddAvatarColIntoAspNetUsersTable.designer.cs">
+      <DependentUpon>202111100632553_AddAvatarColIntoAspNetUsersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111101645171_DropColAvatarInUserTable.cs" />
+    <Compile Include="Migrations\202111101645171_DropColAvatarInUserTable.designer.cs">
+      <DependentUpon>202111101645171_DropColAvatarInUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111101648033_AddColAvatarToUserTable.cs" />
+    <Compile Include="Migrations\202111101648033_AddColAvatarToUserTable.designer.cs">
+      <DependentUpon>202111101648033_AddColAvatarToUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111190809044_ModifiedTypeOfTable.cs" />
+    <Compile Include="Migrations\202111190809044_ModifiedTypeOfTable.designer.cs">
+      <DependentUpon>202111190809044_ModifiedTypeOfTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111230843551_AddFieldUserNameToPostsTable.cs" />
+    <Compile Include="Migrations\202111230843551_AddFieldUserNameToPostsTable.designer.cs">
+      <DependentUpon>202111230843551_AddFieldUserNameToPostsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111241021425_AddOptionalCateIdForPostsTable.cs" />
+    <Compile Include="Migrations\202111241021425_AddOptionalCateIdForPostsTable.designer.cs">
+      <DependentUpon>202111241021425_AddOptionalCateIdForPostsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111241410163_AddStatusColForAspNetUsersTable.cs" />
+    <Compile Include="Migrations\202111241410163_AddStatusColForAspNetUsersTable.designer.cs">
+      <DependentUpon>202111241410163_AddStatusColForAspNetUsersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111270912450_AddColExternalToTableAspNetUser.cs" />
+    <Compile Include="Migrations\202111270912450_AddColExternalToTableAspNetUser.designer.cs">
+      <DependentUpon>202111270912450_AddColExternalToTableAspNetUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112020819185_ChangeTypeRateCountColInPostsTable.cs" />
+    <Compile Include="Migrations\202112020819185_ChangeTypeRateCountColInPostsTable.designer.cs">
+      <DependentUpon>202112020819185_ChangeTypeRateCountColInPostsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112030330465_AddUniqueToUrlSlugColInPostsTable.cs" />
+    <Compile Include="Migrations\202112030330465_AddUniqueToUrlSlugColInPostsTable.designer.cs">
+      <DependentUpon>202112030330465_AddUniqueToUrlSlugColInPostsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112030357093_AddUniqueToUrlSlugColForTagsAndCategoriesTable.cs" />
+    <Compile Include="Migrations\202112030357093_AddUniqueToUrlSlugColForTagsAndCategoriesTable.designer.cs">
+      <DependentUpon>202112030357093_AddUniqueToUrlSlugColForTagsAndCategoriesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AppIdentities\AppUserIdentity.cs" />
+    <Compile Include="Models\EntitiesBase\BaseEntities.cs" />
+    <Compile Include="Models\EntitiesBase\IBaseEntities.cs" />
+    <Compile Include="Models\Entities\Category.cs" />
+    <Compile Include="Models\Entities\Comment.cs" />
+    <Compile Include="Models\Entities\Post.cs" />
+    <Compile Include="Models\Entities\PostTagMap.cs" />
+    <Compile Include="Models\Entities\Tag.cs" />
+    <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\EntityConfigurations\CategoryConfiguration.cs" />
+    <Compile Include="Models\EntityConfigurations\CommentConfiguration.cs" />
+    <Compile Include="Models\EntityConfigurations\PostConfiguration.cs" />
+    <Compile Include="Models\EntityConfigurations\PostTagMapConfiguration.cs" />
+    <Compile Include="Models\EntityConfigurations\TagConfiguration.cs" />
+    <Compile Include="Models\EntityConfigurations\UserConfiguration.cs" />
+    <Compile Include="Models\Enums\Roles.cs" />
+    <Compile Include="Models\Enums\Status.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202111010909120_InitialTable.resx">
+      <DependentUpon>202111010909120_InitialTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111020255135_AddIdentity.resx">
+      <DependentUpon>202111020255135_AddIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111020308476_ChangeNameIdentityTable.resx">
+      <DependentUpon>202111020308476_ChangeNameIdentityTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111031003012_ChangeNameIdentityTables.resx">
+      <DependentUpon>202111031003012_ChangeNameIdentityTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111031011387_AddIdentityTables.resx">
+      <DependentUpon>202111031011387_AddIdentityTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111040321307_AddNewColDescriptionToPostTables.resx">
+      <DependentUpon>202111040321307_AddNewColDescriptionToPostTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111041510551_ChangeRequiredUrlSlugAndDescInTagsTable.resx">
+      <DependentUpon>202111041510551_ChangeRequiredUrlSlugAndDescInTagsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111041707234_ChangeLengthPostContentPostTables.resx">
+      <DependentUpon>202111041707234_ChangeLengthPostContentPostTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111061739251_AddPostTagMapTable.resx">
+      <DependentUpon>202111061739251_AddPostTagMapTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111061749360_ChangeNamePostTagMapsToPostTagMapTable.resx">
+      <DependentUpon>202111061749360_ChangeNamePostTagMapsToPostTagMapTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111061855097_IgnorePostTagMapCollections.resx">
+      <DependentUpon>202111061855097_IgnorePostTagMapCollections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111080435444_ModifiedAspNetRoleTables.resx">
+      <DependentUpon>202111080435444_ModifiedAspNetRoleTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111100611098_ModifiedAvatarIdentityUser.resx">
+      <DependentUpon>202111100611098_ModifiedAvatarIdentityUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111100632553_AddAvatarColIntoAspNetUsersTable.resx">
+      <DependentUpon>202111100632553_AddAvatarColIntoAspNetUsersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111101645171_DropColAvatarInUserTable.resx">
+      <DependentUpon>202111101645171_DropColAvatarInUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111101648033_AddColAvatarToUserTable.resx">
+      <DependentUpon>202111101648033_AddColAvatarToUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111190809044_ModifiedTypeOfTable.resx">
+      <DependentUpon>202111190809044_ModifiedTypeOfTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111230843551_AddFieldUserNameToPostsTable.resx">
+      <DependentUpon>202111230843551_AddFieldUserNameToPostsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111241021425_AddOptionalCateIdForPostsTable.resx">
+      <DependentUpon>202111241021425_AddOptionalCateIdForPostsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111241410163_AddStatusColForAspNetUsersTable.resx">
+      <DependentUpon>202111241410163_AddStatusColForAspNetUsersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111270912450_AddColExternalToTableAspNetUser.resx">
+      <DependentUpon>202111270912450_AddColExternalToTableAspNetUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112020819185_ChangeTypeRateCountColInPostsTable.resx">
+      <DependentUpon>202112020819185_ChangeTypeRateCountColInPostsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112030330465_AddUniqueToUrlSlugColInPostsTable.resx">
+      <DependentUpon>202112030330465_AddUniqueToUrlSlugColInPostsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112030357093_AddUniqueToUrlSlugColForTagsAndCategoriesTable.resx">
+      <DependentUpon>202112030357093_AddUniqueToUrlSlugColForTagsAndCategoriesTable.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FA.JustBlog.Common\FA.JustBlog.Common.csproj">
+      <Project>{fd84f5b3-5ea4-4936-a665-46b04cb3c4f7}</Project>
+      <Name>FA.JustBlog.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

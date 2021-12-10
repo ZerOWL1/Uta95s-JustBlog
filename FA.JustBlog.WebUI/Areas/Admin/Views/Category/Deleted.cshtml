@@ -1,0 +1,80 @@
+﻿@model System.Collections.Generic.IEnumerable<FA.JustBlog.Services.ViewModels.Categories.CreateCategoryViewModel>
+
+@{
+    var errorMess = TempData["ErrorMessage"] as string;
+    var successMess = TempData["SuccessMessage"] as string;
+}
+
+<div class="umanager-container px-4">
+    <div class="umanager-head">
+        <h2 class="mt-4">Deleted Management</h2>
+        <span>Categories Deleted Control</span>
+        <p>Admin can restore categories deleted at this page.</p>
+        @if (!string.IsNullOrEmpty(errorMess))
+        {
+            <div class="alert-danger alert">@errorMess</div>
+        }
+        @if (!string.IsNullOrEmpty(successMess))
+        {
+            <div class="alert-success alert">@successMess</div>
+        }
+    </div>
+    <div class="umanager-body">
+        <div class="umanager-table">
+            @*table*@
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Posts Deleted DataTable
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>UrlSlug</th>
+                                <th>Desc</th>
+                                <th>Status</th>
+                                <th>Deleted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    @if (!string.IsNullOrEmpty(item.Name))
+                                    {
+                                        <td>@item.Name</td>
+                                    }
+                                    else
+                                    {
+                                        <td>null</td>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        <td>true</td>
+                                    }
+                                    else
+                                    {
+                                        <td>false</td>
+                                    }
+                                    <td>@item.Status</td>
+                                    <td>
+                                        @Html.ActionLink(
+                                            "Restore",
+                                            "Restore",
+                                            "Category",
+                                            new { urlRequest = item.UrlSlug},
+                                            new { @class = "text-success text-decoration-none text-uppercase" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

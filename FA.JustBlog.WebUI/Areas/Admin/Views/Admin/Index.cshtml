@@ -1,0 +1,147 @@
+﻿@model FA.JustBlog.Services.ViewModels.Users.StatisticViewModel
+@using FA.JustBlog.Core.Models.AppIdentities
+@{
+    var countSession = HttpContext.Current.Session.Count;
+
+    var session = new object() as AppUserIdentity;
+    for (var i = 0; i < countSession; i++)
+    {
+        session = (AppUserIdentity)HttpContext.Current.Session[i];
+    }
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mt-4">General</h2>
+    <div class="dashboard-p">
+        <div class="dashboard-p-head">
+            <span class="text-capitalize">
+                @if (session?.UserName is string valueOfUserName)
+                {
+                    <span class="text-capitalize">@valueOfUserName</span>
+                } - Admin General
+            </span>
+            <p>Welcome admin, as a admin, you've have permission to modified user and other data, but please be careful what you did, make sure you not doing something affect to systems.</p>
+        </div>
+        <div class="dashboard-p-body">
+            <div class="p-body-content">
+                @if (session?.Avatar is string valueOfSessionAvatar)
+                {
+                    <img src="@Url.Content(valueOfSessionAvatar)" alt="" />
+
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-d">
+        <div class="dashboard-p-head">
+            <span>Dashboard</span>
+            <p>This is UTA95S admin digital control include total post, total user, total post rated, request and session chart. Admin and technical team will update more infors soon.</p>
+        </div>
+        <div class="dashboard-d-body">
+            <div class="row">
+                @*card video*@
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white mb-4">
+                        <div class="card-body card-b">
+                            <div class="card-left">
+                                <span>Total Post</span>
+                                <span>@Model.TotalPost</span>
+                            </div>
+                            <div class="card-right">
+                                <i class="far fa-clone"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            @Html.ActionLink("View Details", "Create", "Post", null,
+                                new { @class = "small text-white stretched-link" })
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                @*card user*@
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white mb-4">
+                        <div class="card-body card-b">
+                            <div class="card-left">
+                                <span>Total User</span>
+                                <span>@Model.TotalUser</span>
+                            </div>
+                            <div class="card-right">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            @Html.ActionLink("View Details", "Index", "User", null,
+                                new { @class = "small text-white stretched-link" })
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                @*card chart*@
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-success text-white mb-4">
+                        <div class="card-body card-b">
+                            <div class="card-left">
+                                <span>Total Rate</span>
+                                <span>
+                                    @{
+                                        var rate = Math.Round(Model.TotalRate, 2);
+                                        <span>@rate</span>
+                                }
+                                </span>
+                        </div>
+                        <div class="card-right">
+                            <i class="far fa-chart-bar"></i>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            @*card request*@
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-danger text-white mb-4">
+                    <div class="card-body card-b">
+                        <div class="card-left">
+                            <span>Pending Post</span>
+                            <span>@Model.PendingPost</span>
+                        </div>
+                        <div class="card-right">
+                            <i class="far fa-comments"></i>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        @Html.ActionLink("View Details", "Pending", "Post", null,
+                            new { @class = "small text-white stretched-link" })
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*chart*@
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-area me-1"></i>
+                Session Chart
+            </div>
+            <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Revenue Chart
+            </div>
+            <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+        </div>
+    </div>
+</div>
+</div>

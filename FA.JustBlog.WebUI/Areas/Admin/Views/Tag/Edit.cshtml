@@ -1,0 +1,56 @@
+﻿@model FA.JustBlog.Services.ViewModels.Tags.EditTagViewModel
+
+<div class="add-container" style="margin: 30px 15px 20px;">
+    <div class="umanager-head">
+        <span>Edit Tag</span>
+    </div>
+    <div class="umanager-form">
+        <div class="" id="collapseActorForm" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <div class="row-pricing umanager-form mx-0">
+                <div class="col-card-6 col-c-sm-12 umanager-col">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <div class="add-movie">
+                            @using (Html.BeginForm("Edit", "Tag", FormMethod.Post, 
+                                new { @class = "add-movie-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.TextBoxFor(x => x.Id, new
+                                {
+                                    @class = "form-control movie-form-input",
+                                    type = "hidden",
+                                    @readonly = true
+                                })
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.Name)
+                                    @Html.TextBoxFor(x => x.Name, new
+                                    {
+                                        @class = "form-control movie-form-input",
+                                        onchange = "changeUrl('Name', 'UrlSlug')"
+                                    })
+                                    @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="mv-bx">
+                                    @Html.LabelFor(x => x.UrlSlug)
+                                    @Html.TextBoxFor(x => x.UrlSlug, new { @class = "form-control movie-form-input", @readonly = true })
+                                    @Html.ValidationMessageFor(x => x.UrlSlug, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="submit-btn">
+                                    <input type="submit" value="UPDATE" />
+                                </div>
+                            }
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-card-6 col-c-sm-12 umanager-col">
+                    <div class="umanager-right">
+                        <span class="u-r-title">Important Note</span>
+                        <p class="u-r-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <p class="u-r-item">Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. </p>
+                        <p class="u-r-item">Tempor orci eu lobortis elementum. Eget felis eget nunc lobortis mattis aliquam faucibus. Auctor neque vitae tempus quam. Tristique sollicitudin nibh sit amet.</p>
+                        <p class="u-r-item"> Ullamcorper eget nulla facilisi etiam dignissim. Dignissim sodales ut eu sem. Mauris nunc congue nisi vitae suscipit tellus mauris a. Lectus arcu bibendum at varius vel pharetra vel.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

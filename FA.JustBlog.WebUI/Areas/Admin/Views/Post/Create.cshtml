@@ -1,0 +1,243 @@
+﻿@using FA.JustBlog.Core.Models.Enums
+@using FA.JustBlog.Services.ViewModels.Categories
+@model FA.JustBlog.Services.ViewModels.Posts.PostsViewModel
+
+@{
+    var message = TempData["Message"] as string;
+
+    var errorMess = TempData["ErrorMess"] as string;
+
+    var categories = TempData["Categories"] as List<CategoryViewModel>;
+}
+
+
+<div class="umanager-container px-4">
+    <div class="umanager-head">
+        <h2 class="mt-4">Post Management</h2>
+        <span>Post Control</span>
+        <p>Admin can modify post at this page. Add, delete, update post. Please be careful before modified posts.</p>
+    </div>
+    <div class="umanager-body">
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <div class="alert alert-success">@message</div>
+        }
+
+        @if (!string.IsNullOrEmpty(errorMess))
+        {
+            <div class="alert alert-danger">
+                <p>@errorMess</p>
+                <p>@Html.ValidationMessage("ErrorAddPost")</p>
+            </div>
+        }
+        <div class="umanager-table">
+            @*table*@
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Post DataTable
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>UrlSlug</th>
+                                <th>Desc</th>
+                                <th>SDesc</th>
+                                <th>CateID</th>
+                                <th>Status</th>
+                                <th>Delete</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var post in Model.CreatePostViewModels)
+                                {
+                                    if (post.Status != Status.IsUnPublished && post.Status != Status.IsDeleted)
+                                    {
+                                        <tr>
+                                            <td>@post.Title</td>
+                                            <td>
+                                                @{
+                                                    if (!string.IsNullOrEmpty(post.UrlSlug))
+                                                    {
+                                                        <span>true</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (!string.IsNullOrEmpty(post.Description))
+                                                    {
+                                                        <span>true</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (!string.IsNullOrEmpty(post.ShortDescription))
+                                                    {
+                                                        <span>true</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>false</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (post.CategoryId == 0 || post.CategoryId == null)
+                                                    {
+                                                        <span>null</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@post.CategoryId</span>
+
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (post.Status == Status.IsPublished)
+                                                    {
+                                                        <span>0</span>
+                                                    }
+                                                    else if (post.Status == Status.IsUnPublished)
+                                                    {
+                                                        <span>1</span>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>2</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(
+                                                    "Delete",
+                                                    "Delete",
+                                                    "Post",
+                                                    new { urlRequest = post.UrlSlug },
+                                                    new { @class = "delete-p-btn btn btn-outline-danger" })
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(
+                                                    "Edit",
+                                                    "Edit",
+                                                    new { urlRequest = post.UrlSlug },
+                                                    new { @class = "edit-p-btn btn btn-outline-primary" })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add-container mx-0">
+        <div class="umanager-head">
+            <span>Post Modify</span>
+        </div>
+        <div class="umanager-form">
+            <a class="nav-link collapsed add-movie-btn" href="#" data-bs-toggle="collapse" data-bs-target="#collapseActorForm">
+                <div class="sb-nav-link-icon"><i class="far fa-plus-square"></i></div>
+                <span>Add New Post</span>
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapseActorForm" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <div class="row-pricing umanager-form mx-0">
+                    <div class="col-card-6 col-c-sm-12 umanager-col">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <div class="add-movie">
+                                @*add new actor*@
+                                <form action="" class="add-movie-form" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.Title)
+                                        @Html.TextBoxFor(x => x.CreatePostViewModel.Title, new
+                                             {
+                                                 @class = "form-control movie-form-input",
+                                                 onchange = "changeUrl('CreatePostViewModel_Title', 'CreatePostViewModel_UrlSlug')"
+                                             })
+                                        @Html.ValidationMessageFor(x => x.CreatePostViewModel.Title, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.UrlSlug)
+                                        @Html.TextBoxFor(x => x.CreatePostViewModel.UrlSlug, new { @class = "form-control movie-form-input", @readonly = true })
+                                        @Html.ValidationMessageFor(x => x.CreatePostViewModel.UrlSlug, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.Tags)
+                                        @Html.TextBoxFor(x => x.CreatePostViewModel.Tags, new { @class = "form-control movie-form-input" })
+                                        @Html.ValidationMessageFor(x => x.CreatePostViewModel.Tags, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.PostContent)
+                                        @Html.TextAreaFor(x => x.CreatePostViewModel.PostContent, new { @class = "form-control movie-form-input" })
+                                        @Html.ValidationMessageFor(x => x.CreatePostViewModel.PostContent, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.ShortDescription)
+                                        @Html.TextAreaFor(x => x.CreatePostViewModel.ShortDescription, new { @class = "form-control movie-form-input" })
+                                        @Html.ValidationMessageFor(x => x.CreatePostViewModel.ShortDescription, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.CategoryId)
+
+                                        <select name="CreatePostViewModel.CategoryId" class="form-control movie-form-input">
+                                            <option disabled="">Choose category</option>
+                                            @if (categories != null)
+                                            {
+                                                foreach (var category in categories)
+                                                {
+                                                    if (category.Status == Status.IsPublished)
+                                                    {
+                                                        <option value="@category.Id">@category.Name</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="mv-bx">
+                                        @Html.LabelFor(x => x.CreatePostViewModel.Description)
+                                        @Html.TextAreaFor(x => x.CreatePostViewModel.Description, new { @class = "form-control movie-form-input", id = "editor" })
+                                        @Html.ValidationMessageFor(x => x.CreatePostViewModel.Description, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="submit-btn">
+                                        <input type="submit" value="ADD" />
+                                    </div>
+                                </form>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="col-card-6 col-c-sm-12 umanager-col">
+                        <div class="umanager-right">
+                            <span class="u-r-title">Important Note</span>
+                            <p class="u-r-item">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                            <p class="u-r-item">Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. </p>
+                            <p class="u-r-item">Tempor orci eu lobortis elementum. Eget felis eget nunc lobortis mattis aliquam faucibus. Auctor neque vitae tempus quam. Tristique sollicitudin nibh sit amet.</p>
+                            <p class="u-r-item"> Ullamcorper eget nulla facilisi etiam dignissim. Dignissim sodales ut eu sem. Mauris nunc congue nisi vitae suscipit tellus mauris a. Lectus arcu bibendum at varius vel pharetra vel.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

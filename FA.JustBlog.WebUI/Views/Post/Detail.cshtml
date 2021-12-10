@@ -1,0 +1,167 @@
+﻿@{
+    Layout = "~/Views/Shared/_PostLayout.cshtml";
+}
+@model FA.JustBlog.Services.ViewModels.Posts.PostDetailViewModels
+
+@{
+    var countSession = HttpContext.Current.Session.Count;
+}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/wwwroot/assets/images/post-imgs/post-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>@Model.Post.Title</h1>
+                    <h2 class="subheading">
+                        @Model.Post.PostContent
+                    </h2>
+                    <span class="meta">
+                        Posted
+                        @{
+                            var postedOn = Model.Post.PostedOn.Month + "/"
+                                           + Model.Post.PostedOn.Day + "/"
+                                           + Model.Post.PostedOn.Year;
+                            <span>@postedOn</span>
+                        }
+                        with total rate @{
+                                            var rate = Math.Round(Model.Post.Rate);
+                                            <span>@rate&#9733; and </span>
+                                        } 
+                        @Model.Post.ViewCount views
+                    </span>
+                    <div class="fb-share-btn">
+                        @*https://localhost:44375/post/detail?requestUrl=@Model.Post.UrlSlug*@
+                        <div class="fb-share-button" data-href="http://democomment.0hi.me/@Model.Post.UrlSlug"
+                             data-layout="button" data-size="small">
+                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44309%2Fdetails&amp;src=sdkpreparse"
+                               class="fb-xfbml-parse-ignore">
+                                Share
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            @using (Html.BeginForm("Rate", "Post", FormMethod.Post, new
+            {
+                id = "rate",
+                @class = "col-md-10 col-lg-8 col-xl-7 py-4 text-end"
+            }))
+            {
+                <div class="rate_post">
+                    <span id="span1" onclick="CRateClick(1)"><i class='bx bx-star'></i></span>
+                    <span id="span2" onclick="CRateClick(2)"><i class='bx bx-star'></i></span>
+                    <span id="span3" onclick="CRateClick(3)"><i class='bx bx-star'></i></span>
+                    <span id="span4" onclick="CRateClick(4)"><i class='bx bx-star'></i></span>
+                    <span id="span5" onclick="CRateClick(5)"><i class='bx bx-star'></i></span>
+                </div>
+                <div>
+                    @Html.TextBoxFor(x => x.RatePostViewModel.UrlSlug, null, new { type = "hidden", Value = Model.Post.UrlSlug })
+                    @Html.TextBoxFor(x => x.RatePostViewModel.Rate, null, new { id = "lblRating", type = "hidden" })
+                    @Html.ValidationMessageFor(x => x.RatePostViewModel.Rate)
+                </div>
+                <div class="btn-outline-rate">
+                    <input class="btn-rate btn btn-outline-primary" type="submit" value="Rate" />
+                </div>
+            }
+            @*<form class="col-md-10 col-lg-8 col-xl-7 py-4 text-end" method="post" action="" id="rate">
+            </form>*@
+        </div>
+    </div>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                @Model.Post.ShortDescription
+                <hr />
+                <div class="post-desc">
+                    @Html.Raw(Model.Post.Description)
+                </div>
+                <p>
+                    Modified in
+                    @{
+                        var modified = Model.Post.Modified.Day + "/" +
+                                       Model.Post.Modified.Month + "/" +
+                                       Model.Post.Modified.Year;
+                        <span>@modified</span>
+                    }
+
+                    <hr />
+                    Find more:
+                    <span>
+                        @foreach (var tag in Model.Tags)
+                        {
+                            @Html.ActionLink(
+                                tag.Name,
+                                "PostTag",
+                                "Post",
+                                new { tagName = tag.UrlSlug },
+                                htmlAttributes: null)
+                            <span>&middot;</span>
+                        }
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</article>
+<hr />
+<article>
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                @foreach (var comment in Model.CommentViewModels)
+                {
+                    <div class="comment-container">
+                        <div class="comment-title">
+                            <div class="comment-user text-capitalize">@comment.Name</div>
+                            <div class="comment-reply">
+                                <i class='bx bx-reply'></i>
+                            </div>
+                        </div>
+                        <div class="comment-details">
+                            @Html.Raw(comment.CommentText)
+                        </div>
+                    </div>
+                }
+                <hr />
+                @if (countSession > 0)
+                {
+                    <form action="" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <input name="CommentViewModel.PostId" value="@Model.Post.Id" readonly="readonly" , hidden="" />
+                            @Html.TextAreaFor(x => x.CommentViewModel.CommentText, new { id = "menubar" })
+                        </div>
+                        <div class="comment-icon">
+                            <input class="btn-outline-primary btn-comment btn-clear" type="button" value="Clear" />
+                            <input class="btn-outline-secondary btn-comment" type="submit" value="Send" />
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</article>
+
+<script>
+    function CRateClick(rating) {
+        $("#lblRating").val(rating);
+
+        for (let i = 1; i <= rating; i++) {
+            $(`#span${i} i`).attr('class', 'bx bxs-star');
+        }
+
+        for (let i = rating+1; i <= 5; i++) {
+            $(`#span${i} i`).attr('class', 'bx bx-star');
+        }
+    }
+</script>
+

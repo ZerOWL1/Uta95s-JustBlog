@@ -1,0 +1,95 @@
+﻿@using System.Web.UI.WebControls
+@{
+    ViewBag.Title = "Sign";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META TAG-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+
+    <!-- TITLE -->
+    <title>@ViewBag.Title</title>
+
+    <!-- BOOTSTRAP CdnJS OR OTHERS CSS -->
+    @*@Styles.Render("~/wwwroot/libs/download/bootstrap/css")
+        @Scripts.Render("~/wwwroot/libs/download/bootstrap/js")*@
+
+    <link href="~/wwwroot/libs/download/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- BOX ICONS -->
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+
+    <!-- OWN CSS -->
+    <link href="~/wwwroot/styles/account-custom.css" rel="stylesheet" />
+
+    <!-- ICON WEB PAGE -->
+    <link rel="icon" type="image/png" href="~/wwwroot/assets/icons/logo.ico" />
+    <!-- OTHER STYLES -->
+    <style>
+        .rc-anchor-normal {
+            background: #000 !important;
+            color: #000 !important;
+        }
+
+        .g-recaptcha {
+            margin-bottom: 35px;
+            -webkit-transform: scale(1.2);
+            -webkit-transform-origin: 0 0;
+        }
+
+        @@media(max-width: 1150px) {
+            .g-recaptcha {
+                -webkit-transform: scale(.95);
+            }
+        } 
+        @@media(max-width: 920px) {
+            .g-recaptcha {
+                -webkit-transform: scale(1);
+            }
+        }
+        @@media(max-width: 760px) {
+            .g-recaptcha {
+                -webkit-transform: scale(1.2);
+            }
+        }
+        @@media(max-width: 440px) {
+            .g-recaptcha {
+                -webkit-transform: scale(.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="body-container">
+        @RenderBody()
+    </div>
+
+
+    <!-- FRAMEWORK JS -->
+    <script src="~/wwwroot/libs/download/jquery/jquery.min.js"></script>
+    <script src="~/wwwroot/libs/download/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/c41956cca0.js" crossorigin="anonymous"></script>
+
+    <!-- CHART & JS -->
+    <!-- OWN SCRIPT -->
+    <script src="~/wwwroot/libs/download/popper/popper.js"></script>
+    <script src="~/wwwroot/scripts/common-account.js"></script>
+    <script src="~/wwwroot/scripts/googlejs/common-google.js"></script>
+
+    <!-- API SCRIPT & JSON -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- OTHER SCRIPT -->
+    <script>
+    </script>
+</body>
+
+</html>
