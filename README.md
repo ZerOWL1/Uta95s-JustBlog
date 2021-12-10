@@ -26,6 +26,7 @@
 - [Back-End Development](#back-end-development)
 - [Databases](#databases)
 - [Media](#media)
+- [How](#how-to-use)
 
 ## Programming Languages
 
@@ -97,4 +98,15 @@
 - [Fonts]
 	- [Google Fonts-Family] - BrutalType, Roboto, Madina, GlimmerOfLight, Nova, Cairo
 	- [Templates] - [Startbootstrap](https://startbootstrap.com/theme/clean-blog)
+
+## How to use
+- [Project]
+	- Download Projects
+	- Run project as adminstrator
+	- Restore Nuget Packages
+	- Add your own data using Code First Migrations or Databases above
+	- Rebuild Project
+- [Google Sign in or Register] 
+	- Go to WebUI Project Properties changes Servers to IIS Express - Project Url: https://localhost:44375/
+	- Or change [REDIRECT_URI](https://github.com/ZerOWL1/Uta95s-JustBlog/blob/master/FA.JustBlog.WebUI/wwwroot/scripts/googlejs/common-google.js) with your own controller code.
 
