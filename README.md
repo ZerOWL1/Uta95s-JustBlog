@@ -78,7 +78,6 @@
 - [CSS] - Style sheet language that specifies how HTML elements are displayed on screen.
 	- [Frameworks] - Getbootstrap Frameworks.
 - [JavaScript] - TinyCME, CKEditor, JQuery, Getbootstrap, Box icons, Font Awesomes, Popper.
-- [jQuery] - Easy to use JavaScript library for DOM manipulation.]
 
 ## Back-End Development
 
@@ -91,6 +90,7 @@
 ## Databases
 
 - [SQL Server] - Microsoft SQL Server is a relational database management system developed by Microsoft.
+- [Database] - Download [Current Database](https://drive.google.com/drive/folders/1c_x7QP7ac08VcRHbM9e3_4m0Ts8aE8kL?usp=sharing)
 
 ## Media
 
