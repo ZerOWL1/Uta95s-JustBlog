@@ -31,38 +31,62 @@
 
 - [C#] - Popular secure object-oriented language designed for flexibility to "write once, run anywhere".
 - [ASP.NET (4.7.2)]
-	- [Servelet && Jsp] - I use C# to build this project. I focus on the 3Layel and MVC model.
+	- I use C# to build this project. I focus on the 3Layel and MVC model.
 - [Razor Page, JavaScript]
 
 ## Front-End Development
-- [GUI]
-	- [Home Page]<br>
-	<img src="https://i.ibb.co/Hgg8mcD/Home-Page.png" width="100%"/><br>
-	
-	- [Categories Page]<br>
-	<img src="https://i.ibb.co/qyJHzvf/Categories.png" width="100%"/><br>
+- [Home and Categories Page]<br>
+<table width="100%">
+	<tr>
+		<td valign="top" width="50%">
+  			<img src="https://i.ibb.co/Hgg8mcD/Home-Page.png" width="100%"/>
+		</td>
+		<td valign="top" width="50%">
+			<img src="https://i.ibb.co/qyJHzvf/Categories.png" width="100%"/>
+		</td>
+	</tr>
+</table>
+
+- [Details Page]<br>
+<table width="100%">
+	<tr>
+		<td valign="top" width="50%">
+  			<img src="https://i.ibb.co/wNhpfx5/Detail1.png" width="100%"/>
+		</td>
+		<td valign="top" width="50%">
+			<img src="https://i.ibb.co/682Mg3T/Detail2.png" width="100%"/>
+		</td>
+	</tr>
+</table>
+<br>
   
-  - [Categories Page]<br>
-	<img src="https://i.ibb.co/qyJHzvf/Categories.png" width="100%"/><br>
-  
-  - [Details Page]<br>
-	<img src="https://i.ibb.co/wNhpfx5/Detail1.png" width="50%"/>
-	<img src="https://i.ibb.co/682Mg3T/Detail2.png" width="50%"/><br>
-  
-  - [Admin Page]<br>
-	<img src="https://i.ibb.co/8xFSTp0/Admin1.png" width="50%"/>
-	<img src="https://i.ibb.co/BT6Nkqg/Admin2.png" width="50%"/><br>
+- [Admin Page]<br>
+<table width="100%">
+	<tr>
+		<td valign="top" width="50%">
+  			<img src="https://i.ibb.co/8xFSTp0/Admin1.png" width="100%"/>
+		</td>
+		<td valign="top" width="50%">
+			<img src="https://i.ibb.co/BT6Nkqg/Admin2.png" width="100%"/>
+		</td>
+	</tr>
+</table>
+<br>
 
 - [HTML5] - Markup language used for websites & web apps.
 - [Razor Page] - Designed to make common patterns used with web browsers easy to implement when building an app.
 - [CSS] - Style sheet language that specifies how HTML elements are displayed on screen.
 	- [Frameworks] - Getbootstrap Frameworks.
-- [JavaScript] - SwiperJS, Aplayer, CndJS, Getbootstrap, and Font Awesome.
+- [JavaScript] - TinyCME, CKEditor, JQuery, Getbootstrap, Box icons, Font Awesomes, Popper.
 - [jQuery] - Easy to use JavaScript library for DOM manipulation.]
 
 ## Back-End Development
 
 - [C#] - C# is a modern, object-oriented, and type-safe programming language.
+- [Function Required] 
+	- [Guest] - View Posts, View Details, Contact, Register Account or Sign In with Google Account 
+	- [User (Member)] - Guest Funcs,  Sign in, Profiles, Change User Infos, Create Own Post.
+	- [Admin and Mod] - User Funcs, CRUD Models, Ban, Unban, Upgrade Users, Approves User Post,...
 
 ## Databases
 
